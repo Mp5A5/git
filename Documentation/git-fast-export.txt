@@ -119,6 +119,11 @@ by keeping the marks the same across runs.
 	the shape of the history and stored tree.  See the section on
 	`ANONYMIZING` below.
 
+--seed-anonymized=<from>[:<to>]::
+	Convert token `<from>` to `<to>` in the anonymized output. If
+	`<to>` is omitted, map `<from>` to itself (i.e., do not
+	anonymize it). See the section on `ANONYMIZING` below.
+
 --reference-excluded-parents::
 	By default, running a command such as `git fast-export
 	master~5..master` will not include the commit master{tilde}5
@@ -238,6 +243,25 @@ collapse "User 0", "User 1", etc into "User X"). This produces a much
 smaller output, and it is usually easy to quickly confirm that there is
 no private data in the stream.
 
+Reproducing some bugs may require referencing particular commits or
+paths, which becomes challenging after refnames and paths have been
+anonymized. You can ask for a particular token to be left as-is or
+mapped to a new value. For example, if you have a bug which reproduces
+with `git rev-list mybranch -- foo.c`, you can run:
+
+---------------------------------------------------
+$ git fast-export --anonymize --all \
+      --seed-anonymized=foo.c:secret.c \
+      --seed-anonymized=mybranch \
+      >stream
+---------------------------------------------------
+
+After importing the stream, you can then run `git rev-list mybranch --
+secret.c` in the anonymized repository.
+
+Note that paths and refnames are split into tokens at slash boundaries.
+The command above would anonymize `subdir/foo.c` as something like
+`path123/secret.c`.
 
 LIMITATIONS
 -----------
