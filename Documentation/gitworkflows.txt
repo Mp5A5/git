@@ -85,7 +85,7 @@ As a given feature goes from experimental to stable, it also
 
 There is a fourth official branch that is used slightly differently:
 
-* `seen` (patches seen by the maintainer) is an integration branch for
+* 'seen' (patches seen by the maintainer) is an integration branch for
   things that are not quite ready for inclusion yet (see "Integration
   Branches" below).
 
